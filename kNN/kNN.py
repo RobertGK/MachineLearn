@@ -6,6 +6,8 @@ Created on Sun Apr 23 19:55:00 2017
 """
 import numpy as np
 import operator
+import os,sys
+
 def createdataSet():
     group = np.array([[1.0,1.1],[1.0,1.0],[0,0],[0.1,0.1]])
     labels = ['A','A','B','B']
@@ -53,3 +55,62 @@ def autoNorm(dataSet) :
     normDataSet = dataSet/ np.tile(ranges,(m,1))
     return normDataSet,ranges,minVals
      
+def datingClassTest():
+    hoRatio = 0.1
+    datingDataMat,datingLabels = file2matrix("datingTestSet2.txt")
+    normMat,ranges,minVals = autoNorm(datingDataMat)
+    m = normMat.shape[0]
+    numTestVecs = int(m*hoRatio)
+    errorCount = 0.0
+    for i in range(numTestVecs):
+        classifierResult = classify0(normMat[i,:],normMat[numTestVecs:m,:],\
+                                     datingLabels[numTestVecs:m],3)
+        print("the classifier came back with:%d, the real answer is: %d"\
+              %(classifierResult,int(datingLabels[i]))
+#   try:
+#       print("the total error rate is : %f"　%(errorCount/(float(numTestVecs))))
+#   except Exception as ex:
+#       print ("表达式为空，请检查") 
+      
+     
+def img2vector(filename):
+    returnVect = np.zeros((1,1024))
+    fr = open(filename)
+    for i in range(32):
+        lineStr = fr.readline()
+        for j in range(32):
+            returnVect[0,32*i+j] = int[lineStr[j]]
+    return returnVect
+    
+    
+def handwritingClassTest():
+    hwLabels = []
+    trainingFileList = listdir("trainingDigits")
+    m = len(trainingFileList)
+    trainingMat = zeros((m,1024))
+    for i in range(m):
+        fileNameStr = trainingFileList[i]
+        fileStr = fileNameStr.split('.')[0]
+        classNumStr = int(fileStr.split('_')[0])
+        vectorUnderTest = img2vector('testDigits/%s' % fileNameStr)
+        classifierResult = classify0(vectorUnderTest,\
+                                     trainingMat,hwLabels,3)
+        print("the classifier came back with:%d,the real answer is:d%"\
+              %(classfierResult,classNumStr))
+        if(classifierResult != classNumStr):errorCount += 1.0
+    print("\nthe total number of errors is :%d"% errorCount)
+    print("\nthe total error rate is : %f" % (errorCount/float(mTest)))
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
